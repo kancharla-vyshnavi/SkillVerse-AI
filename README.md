@@ -33,10 +33,6 @@
 - DevOps
 - UI/UX Design
 
-## 📸 Preview
-
-(Add your screenshots here)
-
 ## 🚀 Run Locally
 
 ```bash
