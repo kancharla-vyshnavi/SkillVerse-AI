@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillVerse AI - Signup Registry</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- App Authentication Wrapper -->
+    <div class="auth-wrapper">
+        <div class="glow-sphere sphere-1"></div>
+        <div class="glow-sphere sphere-2"></div>
+
+        <div class="auth-card glass-panel" style="max-width: 540px;">
+            <div class="auth-header">
+                <div class="auth-logo"><i class="fa-solid fa-atom logo-icon"></i></div>
+                <h1 class="auth-title">Registry Node</h1>
+                <p class="auth-subtitle">Establish Future Learning Ecosystem Credentials</p>
+            </div>
+
+            <!-- Toast-like alerts for validation -->
+            <div id="validation-alert" class="validation-alert error hidden">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <span id="validation-alert-text">Validation Warning</span>
+            </div>
+
+            <!-- Form -->
+            <form id="signup-form">
+                <div class="form-row-2col">
+                    <div class="form-group">
+                        <label for="signup-name" class="form-label">Full Name</label>
+                        <input type="text" id="signup-name" class="form-input" placeholder="e.g. Alex Carter" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-email" class="form-label">Email Address</label>
+                        <input type="email" id="signup-email" class="form-input" placeholder="alex@skillverse.ai" required autocomplete="email">
+                    </div>
+                </div>
+
+                <div class="form-row-2col">
+                    <div class="form-group">
+                        <label for="signup-password" class="form-label">Passphrase</label>
+                        <input type="password" id="signup-password" class="form-input" placeholder="••••••••" required autocomplete="new-password">
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-confirm-password" class="form-label">Confirm Passphrase</label>
+                        <input type="password" id="signup-confirm-password" class="form-input" placeholder="••••••••" required autocomplete="new-password">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="signup-college" class="form-label">Institution / College Name</label>
+                    <input type="text" id="signup-college" class="form-input" placeholder="e.g. SkillVerse Institute of Technology" required>
+                </div>
+
+                <div class="form-row-2col">
+                    <div class="form-group">
+                        <label for="signup-branch" class="form-label">Branch / Department</label>
+                        <select id="signup-branch" class="form-input" required>
+                            <option value="" disabled selected>Select Branch</option>
+                            <option value="Computer Science">Computer Science & Engineering</option>
+                            <option value="Information Technology">Information Technology</option>
+                            <option value="Electronics & Communication">Electronics & Communication</option>
+                            <option value="Electrical Engineering">Electrical Engineering</option>
+                            <option value="Mechanical Engineering">Mechanical Engineering</option>
+                            <option value="Civil Engineering">Civil Engineering</option>
+                            <option value="Data Science / AI">Data Science & AI</option>
+                            <option value="Other">Other Branch</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-year" class="form-label">Year of Study</label>
+                        <select id="signup-year" class="form-input" required>
+                            <option value="" disabled selected>Select Year</option>
+                            <option value="1st Year">1st Year (Freshman)</option>
+                            <option value="2nd Year">2nd Year (Sophomore)</option>
+                            <option value="3rd Year">3rd Year (Junior)</option>
+                            <option value="4th Year">4th Year (Senior)</option>
+                            <option value="Post-Graduate">Post-Graduate</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1.5rem;">
+                    <label class="form-checkbox-label">
+                        <input type="checkbox" id="signup-terms" required>
+                        <span>I accept terms of SkillVerse neural network links</span>
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-lg glow-btn" style="width: 100%;">
+                    Deploy Profile Core <i class="fa-solid fa-user-plus"></i>
+                </button>
+            </form>
+
+            <p class="auth-redirect-text">
+                Already registered? <a href="login.html" class="auth-link">Login Terminal</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="auth.js"></script>
+    <script>
+        // Init theme helper
+        const savedTheme = localStorage.getItem("skillverse_theme") || "dark";
+        document.documentElement.setAttribute("data-theme", savedTheme);
+
+        const form = document.getElementById("signup-form");
+        const alertBox = document.getElementById("validation-alert");
+        const alertText = document.getElementById("validation-alert-text");
+
+        form.addEventListener("submit", function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById("signup-name").value;
+            const email = document.getElementById("signup-email").value;
+            const password = document.getElementById("signup-password").value;
+            const confirmPassword = document.getElementById("signup-confirm-password").value;
+            const college = document.getElementById("signup-college").value;
+            const branch = document.getElementById("signup-branch").value;
+            const year = document.getElementById("signup-year").value;
+            const terms = document.getElementById("signup-terms").checked;
+
+            // Clear errors
+            alertBox.classList.add("hidden");
+
+            // Validations
+            if (password.length < 6) {
+                alertText.textContent = "Passphrase must be at least 6 characters long.";
+                alertBox.classList.remove("hidden");
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                alertText.textContent = "Passphrases do not match.";
+                alertBox.classList.remove("hidden");
+                return;
+            }
+
+            if (!terms) {
+                alertText.textContent = "You must accept the terms of the link.";
+                alertBox.classList.remove("hidden");
+                return;
+            }
+
+            try {
+                Auth.signUp(name, email, password, college, branch, year);
+                // On signup success, Auth.signUp logs the user in.
+                // Redirect guard will automatically direct them to onboarding.html
+                window.location.href = "onboarding.html";
+            } catch (err) {
+                alertText.textContent = err.message;
+                alertBox.classList.remove("hidden");
+            }
+        });
+    </script>
+</body>
+</html>

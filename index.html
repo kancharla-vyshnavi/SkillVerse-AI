@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillVerse AI - Futuristic Career Guidance Platform</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- App Authentication Manager -->
+    <script src="auth.js"></script>
+
+    <!-- Toast Notifications Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- App Container -->
+    <div id="app" class="app-container">
+        
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-logo" onclick="window.location.href='index.html'">
+                <i class="fa-solid fa-atom logo-icon"></i>
+                <div class="logo-text">
+                    <span class="logo-brand">SkillVerse AI</span>
+                    <span class="logo-tagline">Future Learning Ecosystem</span>
+                </div>
+            </div>
+            <div class="header-actions">
+                <!-- Streak Tracker Badge -->
+                <div id="global-streak-badge" class="streak-badge hidden" title="Learning Streak">
+                    <i class="fa-solid fa-fire fire-icon"></i>
+                    <span id="global-streak-count">1</span> Day
+                </div>
+                <!-- XP Tracker Badge -->
+                <div id="global-xp-badge" class="xp-badge hidden" title="Experience Points">
+                    <i class="fa-solid fa-shield-halved xp-icon"></i>
+                    <span id="global-xp-text">0 XP</span>
+                </div>
+                <!-- User Profile Badge / Login Button -->
+                <a href="login.html" id="header-auth-btn" class="btn btn-secondary btn-sm">
+                    Access Core <i class="fa-solid fa-network-wired" style="margin-left: 0.25rem;"></i>
+                </a>
+                <a href="dashboard.html" id="header-user-badge" class="user-badge hidden">
+                    <i class="fa-solid fa-user-astronaut"></i>
+                    <span id="user-badge-name">Student</span>
+                    <span id="user-badge-level" class="level-tag">Beginner</span>
+                </a>
+                <!-- Light/Dark Mode Switcher -->
+                <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Theme">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Workspace -->
+        <main class="app-main">
+
+            <!-- LANDING PAGE SECTION -->
+            <section id="landing-section" class="landing-container">
+                <div class="landing-hero text-center">
+                    <div class="glow-sphere sphere-1"></div>
+                    <div class="glow-sphere sphere-2"></div>
+                    
+                    <span class="neon-tagline">System Status: Operational</span>
+                    <h1 class="landing-title">Navigate Your Tech Career with <span class="neon-gradient-text">AI Guidance</span></h1>
+                    <p class="landing-subtitle">Streamline your path from beginner to placement-ready developer. Build interactive portfolios, analyze resumes, challenge yourself, and practice simulated mock interviews with an adaptive AI mentor.</p>
+                    
+                    <div class="landing-actions">
+                        <button id="btn-launch-terminal" class="btn btn-primary btn-lg glow-btn">
+                            Launch Career Assistant <i class="fa-solid fa-rocket"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Stats Section -->
+                <div class="landing-stats-grid">
+                    <div class="stat-card glass-panel">
+                        <span class="stat-num counter" data-target="94">0</span><span class="stat-num">%</span>
+                        <p class="stat-label">Interview Success Rate</p>
+                    </div>
+                    <div class="stat-card glass-panel">
+                        <span class="stat-num counter" data-target="7">0</span>
+                        <p class="stat-label">Tech Domains Active</p>
+                    </div>
+                    <div class="stat-card glass-panel">
+                        <span class="stat-num counter" data-target="15">0</span><span class="stat-num">K+</span>
+                        <p class="stat-label">Guided Roadmaps Built</p>
+                    </div>
+                </div>
+
+                <!-- Feature Grid -->
+                <h3 class="landing-section-title text-center">Engine Features</h3>
+                <div class="landing-features-grid">
+                    <div class="feature-card glass-panel">
+                        <div class="feature-icon"><i class="fa-solid fa-map-location-dot"></i></div>
+                        <h4>Adaptive Roadmaps</h4>
+                        <p>Our algorithm skips the basics for intermediate/advanced students, creating a direct path to higher roles.</p>
+                    </div>
+                    <div class="feature-card glass-panel">
+                        <div class="feature-icon"><i class="fa-solid fa-comments"></i></div>
+                        <h4>AI Chat Mentor</h4>
+                        <p>A contextual AI mentor that responds to your chosen track, current tasks, and resumes.</p>
+                    </div>
+                    <div class="feature-card glass-panel">
+                        <div class="feature-icon"><i class="fa-solid fa-laptop-code"></i></div>
+                        <h4>Challenge Playground</h4>
+                        <p>Solve coding and database challenges directly in our console and verify code instantly.</p>
+                    </div>
+                    <div class="feature-card glass-panel">
+                        <div class="feature-icon"><i class="fa-solid fa-shield-check"></i></div>
+                        <h4>Interview Simulator</h4>
+                        <p>Simulate technical screenings and behavioral checks with difficulty settings and timer pressure.</p>
+                    </div>
+                    <div class="feature-card glass-panel">
+                        <div class="feature-icon"><i class="fa-solid fa-file-shield"></i></div>
+                        <h4>Resume Analyzer</h4>
+                        <p>Scan your resume text against critical domain keywords to check ATS compatibility.</p>
+                    </div>
+                    <div class="feature-card glass-panel">
+                        <div class="feature-icon"><i class="fa-solid fa-chart-line"></i></div>
+                        <h4>Streak & XP Tracker</h4>
+                        <p>Earn XP, level up, unlock achievement badges, and track your consistency with a visual graph.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p>© 2026 SkillVerse AI. Powered by Futuristic personal Career Personalization Engine.</p>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Theme Toggle Logic
+        const toggleBtn = document.getElementById("theme-toggle");
+        const savedTheme = localStorage.getItem("skillverse_theme") || "dark";
+        document.documentElement.setAttribute("data-theme", savedTheme);
+        updateThemeIcon(savedTheme);
+        
+        toggleBtn.addEventListener("click", () => {
+            const currentTheme = document.documentElement.getAttribute("data-theme");
+            const newTheme = currentTheme === "dark" ? "light" : "dark";
+            document.documentElement.setAttribute("data-theme", newTheme);
+            localStorage.setItem("skillverse_theme", newTheme);
+            updateThemeIcon(newTheme);
+        });
+
+        function updateThemeIcon(theme) {
+            const icon = toggleBtn.querySelector("i");
+            if (theme === "dark") {
+                icon.className = "fa-solid fa-moon";
+            } else {
+                icon.className = "fa-solid fa-sun";
+            }
+        }
+
+        // Stats Counters Animation
+        const counters = document.querySelectorAll(".counter");
+        counters.forEach(counter => {
+            const target = parseInt(counter.getAttribute("data-target"), 10);
+            let current = 0;
+            const increment = target / 50;
+            const update = () => {
+                current += increment;
+                if (current < target) {
+                    counter.textContent = String(Math.ceil(current));
+                    setTimeout(update, 20);
+                } else {
+                    counter.textContent = String(target);
+                }
+            };
+            update();
+        });
+
+        // Initialize header states based on auth
+        document.addEventListener("DOMContentLoaded", () => {
+            const user = Auth.getCurrentUser();
+            const loginBtn = document.getElementById("header-auth-btn");
+            const userBadge = document.getElementById("header-user-badge");
+            const streakBadge = document.getElementById("global-streak-badge");
+            const xpBadge = document.getElementById("global-xp-badge");
+
+            if (user) {
+                // Logged in
+                loginBtn.classList.add("hidden");
+                
+                userBadge.classList.remove("hidden");
+                document.getElementById("user-badge-name").textContent = user.name || "Student";
+                document.getElementById("user-badge-level").textContent = user.knowledgeLevel ? user.knowledgeLevel.charAt(0).toUpperCase() + user.knowledgeLevel.slice(1) : "Beginner";
+                
+                streakBadge.classList.remove("hidden");
+                document.getElementById("global-streak-count").textContent = String(user.streak || 1);
+                
+                xpBadge.classList.remove("hidden");
+                document.getElementById("global-xp-text").textContent = (user.xp || 0) + " XP";
+            } else {
+                // Not logged in
+                loginBtn.classList.remove("hidden");
+                userBadge.classList.add("hidden");
+                streakBadge.classList.add("hidden");
+                xpBadge.classList.add("hidden");
+            }
+
+            // Launch Terminal CTA Handler
+            document.getElementById("btn-launch-terminal").addEventListener("click", () => {
+                if (Auth.isAuthenticated()) {
+                    if (Auth.isOnboarded()) {
+                        window.location.href = "dashboard.html";
+                    } else {
+                        window.location.href = "onboarding.html";
+                    }
+                } else {
+                    window.location.href = "login.html";
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillVerse AI - Login Terminal</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- App Authentication Wrapper -->
+    <div class="auth-wrapper">
+        <div class="glow-sphere sphere-1"></div>
+        <div class="glow-sphere sphere-2"></div>
+
+        <div class="auth-card glass-panel">
+            <div class="auth-header">
+                <div class="auth-logo"><i class="fa-solid fa-atom logo-icon"></i></div>
+                <h1 class="auth-title">SkillVerse Terminal</h1>
+                <p class="auth-subtitle">Initialize Career Guidance Link</p>
+            </div>
+
+            <!-- Toast-like alerts for validation -->
+            <div id="validation-alert" class="validation-alert error hidden">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <span id="validation-alert-text">Authentication Error</span>
+            </div>
+
+            <!-- Form -->
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-email" class="form-label">Secure Email Address</label>
+                    <input type="email" id="login-email" class="form-input" placeholder="e.g. alex@skillverse.ai" required autocomplete="email">
+                </div>
+
+                <div class="form-group">
+                    <label for="login-password" class="form-label">Encryption Key (Password)</label>
+                    <input type="password" id="login-password" class="form-input" placeholder="••••••••••••" required autocomplete="current-password">
+                </div>
+
+                <div class="auth-form-footer">
+                    <label class="form-checkbox-label">
+                        <input type="checkbox" id="login-remember">
+                        <span>Remember Me</span>
+                    </label>
+                    <a href="#" id="forgot-password-link" class="auth-link">Forgot Key?</a>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-lg glow-btn" style="width: 100%;">
+                    Access Core Node <i class="fa-solid fa-network-wired"></i>
+                </button>
+            </form>
+
+            <div class="auth-divider">Or decrypt via</div>
+
+            <!-- Social Authentication Buttons -->
+            <div class="social-auth-grid">
+                <button type="button" class="btn-social social-btn" data-provider="Google" title="Log in with Google">
+                    <i class="fa-brands fa-google"></i>
+                </button>
+                <button type="button" class="btn-social social-btn" data-provider="GitHub" title="Log in with GitHub">
+                    <i class="fa-brands fa-github"></i>
+                </button>
+                <button type="button" class="btn-social social-btn" data-provider="LinkedIn" title="Log in with LinkedIn">
+                    <i class="fa-brands fa-linkedin-in"></i>
+                </button>
+            </div>
+
+            <p class="auth-redirect-text">
+                New user detected? <a href="signup.html" class="auth-link">Register Account</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="auth.js"></script>
+    <script>
+        // Init theme helper
+        const savedTheme = localStorage.getItem("skillverse_theme") || "dark";
+        document.documentElement.setAttribute("data-theme", savedTheme);
+
+        const form = document.getElementById("login-form");
+        const alertBox = document.getElementById("validation-alert");
+        const alertText = document.getElementById("validation-alert-text");
+        const forgotLink = document.getElementById("forgot-password-link");
+        const socialBtns = document.querySelectorAll(".social-btn");
+
+        // Form Submit
+        form.addEventListener("submit", function(e) {
+            e.preventDefault();
+            const email = document.getElementById("login-email").value;
+            const pass = document.getElementById("login-password").value;
+            const remember = document.getElementById("login-remember").checked;
+
+            try {
+                Auth.logIn(email, pass, remember);
+                // Redirect guard will handle dashboard redirect automatically
+                window.location.href = "dashboard.html";
+            } catch (err) {
+                alertText.textContent = err.message;
+                alertBox.classList.remove("hidden");
+                alertBox.className = "validation-alert error";
+            }
+        });
+
+        // Forgot password dialog simulator
+        forgotLink.addEventListener("click", function(e) {
+            e.preventDefault();
+            alertText.textContent = "Simulated: Encryption recovery link sent to " + (document.getElementById("login-email").value || "your email") + ".";
+            alertBox.className = "validation-alert success";
+            alertBox.classList.remove("hidden");
+        });
+
+        // Social login click simulator
+        socialBtns.forEach(btn => {
+            btn.addEventListener("click", function() {
+                const provider = this.getAttribute("data-provider");
+                alertText.textContent = `Connecting Secure Shell to ${provider}... Auto-logged into Demo account.`;
+                alertBox.className = "validation-alert success";
+                alertBox.classList.remove("hidden");
+                
+                setTimeout(() => {
+                    // Log in as default demo user
+                    localStorage.setItem(Auth.KEYS.LOGGED_IN, "alex@skillverse.ai");
+                    window.location.href = "dashboard.html";
+                }, 1200);
+            });
+        });
+    </script>
+</body>
+</html>

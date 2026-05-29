@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillVerse AI - Onboarding Matrix</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- App Authentication Redirection Guard -->
+    <script src="auth.js"></script>
+
+    <!-- Main Container -->
+    <div class="app-container" style="justify-content: center; min-height: 100vh; padding: 2rem 1rem;">
+        <main class="app-main" style="max-width: 800px; padding: 0;">
+            <div class="onboarding-card glass-panel" style="padding: 2.5rem;">
+                
+                <!-- Progress Header -->
+                <div class="onboarding-steps-bar">
+                    <div class="step-indicator active" data-step="1">1. Domain</div>
+                    <div class="step-line"></div>
+                    <div class="step-indicator" data-step="2">2. Level</div>
+                    <div class="step-line"></div>
+                    <div class="step-indicator" data-step="3">3. Academics</div>
+                    <div class="step-line"></div>
+                    <div class="step-indicator" data-step="4">4. Goals</div>
+                    <div class="step-line"></div>
+                    <div class="step-indicator" data-step="5">5. Synthesize</div>
+                </div>
+
+                <!-- Toast-like alerts for validation -->
+                <div id="validation-alert" class="validation-alert error hidden">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                    <span id="validation-alert-text">Warning</span>
+                </div>
+
+                <!-- STEP 1: SELECT CAREER DOMAIN -->
+                <div class="onboarding-step-pane active" id="onboarding-step-1">
+                    <h2 class="step-title">Select Career Domain</h2>
+                    <p class="step-subtitle">Choose your primary target track. We will tailor all resources and timelines to this domain.</p>
+                    
+                    <div class="form-group">
+                        <div class="level-cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+                            <div class="level-card active domain-select-card" data-domain="software_engineer">
+                                <div class="level-icon"><i class="fa-solid fa-laptop-code"></i></div>
+                                <div class="level-details">
+                                    <h3>Software Engineer</h3>
+                                    <p>Full stack apps, system design, DSA, APIs, and cloud deployments.</p>
+                                </div>
+                            </div>
+                            <div class="level-card domain-select-card" data-domain="data_scientist">
+                                <div class="level-icon"><i class="fa-solid fa-chart-line"></i></div>
+                                <div class="level-details">
+                                    <h3>Data Scientist</h3>
+                                    <p>Data cleaning, exploratory analysis, machine learning models, and statistics.</p>
+                                </div>
+                            </div>
+                            <div class="level-card domain-select-card" data-domain="data_analyst">
+                                <div class="level-icon"><i class="fa-solid fa-chart-column"></i></div>
+                                <div class="level-details">
+                                    <h3>Data Analyst</h3>
+                                    <p>Excel formulas, SQL database queries, Power BI/Tableau dashboards, and business insights.</p>
+                                </div>
+                            </div>
+                            <div class="level-card domain-select-card" data-domain="ai_ml">
+                                <div class="level-icon"><i class="fa-solid fa-brain"></i></div>
+                                <div class="level-details">
+                                    <h3>AI / ML Engineer</h3>
+                                    <p>Neural networks, deep learning, NLP, transformers, and model serving pipelines.</p>
+                                </div>
+                            </div>
+                            <div class="level-card domain-select-card" data-domain="cybersecurity">
+                                <div class="level-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                                <div class="level-details">
+                                    <h3>Cybersecurity Analyst</h3>
+                                    <p>Network penetration, OWASP web vulnerabilities, firewalls, and encryption.</p>
+                                </div>
+                            </div>
+                            <div class="level-card domain-select-card" data-domain="cloud">
+                                <div class="level-icon"><i class="fa-solid fa-cloud"></i></div>
+                                <div class="level-details">
+                                    <h3>Cloud Engineer</h3>
+                                    <p>AWS, serverless microservices, Terraform IaC, and Kubernetes clusters.</p>
+                                </div>
+                            </div>
+                            <div class="level-card domain-select-card" data-domain="ui_ux">
+                                <div class="level-icon"><i class="fa-solid fa-bezier-curve"></i></div>
+                                <div class="level-details">
+                                    <h3>UI/UX Designer</h3>
+                                    <p>Figma auto-layouts, prototypes, typography, user flows, and design systems.</p>
+                                </div>
+                            </div>
+                            <div class="level-card domain-select-card" data-domain="business_analyst">
+                                <div class="level-icon"><i class="fa-solid fa-briefcase"></i></div>
+                                <div class="level-details">
+                                    <h3>Business Analyst</h3>
+                                    <p>Spreadsheet metrics, Power BI / Tableau dashboards, SQL, and Agile stories.</p>
+                                </div>
+                            </div>
+                            <div class="level-card domain-select-card" data-domain="product_manager">
+                                <div class="level-icon"><i class="fa-solid fa-lightbulb"></i></div>
+                                <div class="level-details">
+                                    <h3>Product Manager</h3>
+                                    <p>Product lifecycles, PRDs, RICE backlog priority, growth models, and GTM plans.</p>
+                                </div>
+                            </div>
+                            <div class="level-card domain-select-card" data-domain="mechanical_design">
+                                <div class="level-icon"><i class="fa-solid fa-gears"></i></div>
+                                <div class="level-details">
+                                    <h3>Mechanical Designer</h3>
+                                    <p>3D CAD parts sketching, assemblies, stress analysis, DFM rules, and prototyping.</p>
+                                </div>
+                            </div>
+                            <div class="level-card domain-select-card" data-domain="civil_services">
+                                <div class="level-icon"><i class="fa-solid fa-building-columns"></i></div>
+                                <div class="level-details">
+                                    <h3>Civil Services (UPSC)</h3>
+                                    <p>Indian polity, GS core reference subjects, essay drills, and public policy.</p>
+                                </div>
+                            </div>
+                            <div class="level-card domain-select-card" data-domain="psu">
+                                <div class="level-icon"><i class="fa-solid fa-industry"></i></div>
+                                <div class="level-details">
+                                    <h3>PSU Officer (GATE)</h3>
+                                    <p>Engineering math, core technical problem solving, numericals, and panel interviews.</p>
+                                </div>
+                            </div>
+                            <div class="level-card domain-select-card" data-domain="entrepreneur">
+                                <div class="level-icon"><i class="fa-solid fa-rocket"></i></div>
+                                <div class="level-details">
+                                    <h3>Entrepreneur / Founder</h3>
+                                    <p>Lean canvas validations, single-feature MVPs, cap tables, and VC pitching.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="onboarding-actions">
+                        <div></div> <!-- empty left -->
+                        <button class="btn btn-primary btn-next" data-next="2">Proceed <i class="fa-solid fa-arrow-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- STEP 2: SELECT KNOWLEDGE LEVEL -->
+                <div class="onboarding-step-pane" id="onboarding-step-2">
+                    <h2 class="step-title">Select Knowledge Level</h2>
+                    <p class="step-subtitle">Assess your coding base so we can optimize your phase skipping algorithms.</p>
+                    
+                    <div class="form-group">
+                        <div class="level-cards-grid">
+                            <div class="level-card active level-select-card" data-level="beginner">
+                                <div class="level-icon"><i class="fa-solid fa-seedling"></i></div>
+                                <div class="level-details">
+                                    <h3>Beginner</h3>
+                                    <p>Absolute basic syntax. I need comprehensive instructions from level zero.</p>
+                                </div>
+                            </div>
+                            <div class="level-card level-select-card" data-level="intermediate">
+                                <div class="level-icon"><i class="fa-solid fa-compass"></i></div>
+                                <div class="level-details">
+                                    <h3>Intermediate</h3>
+                                    <p>Knows basic functions, variables, and arrays. Ready for application architecture.</p>
+                                </div>
+                            </div>
+                            <div class="level-card level-select-card" data-level="advanced">
+                                <div class="level-icon"><i class="fa-solid fa-rocket"></i></div>
+                                <div class="level-details">
+                                    <h3>Advanced</h3>
+                                    <p>Experienced coder. Focus on systems design, optimization, and mock placement checkouts.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="onboarding-actions">
+                        <button class="btn btn-secondary btn-prev" data-prev="1"><i class="fa-solid fa-arrow-left"></i> Back</button>
+                        <button class="btn btn-primary btn-next" data-next="3">Proceed <i class="fa-solid fa-arrow-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- STEP 3: ACADEMIC DETAILS -->
+                <div class="onboarding-step-pane" id="onboarding-step-3">
+                    <h2 class="step-title">Academic & Aptitude Matrix</h2>
+                    <p class="step-subtitle">Input your metrics to personalize recommendations for target placements.</p>
+                    
+                    <div class="form-group">
+                        <label for="student-cgpa" class="form-label">Current CGPA / Percentage Rating</label>
+                        <input type="number" id="student-cgpa" class="form-input" placeholder="e.g. 8.5 or 85" min="0" max="100" step="0.01" required value="8.0">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="coding-confidence" class="form-label">Coding Confidence Level</label>
+                        <div class="range-slider-group">
+                            <input type="range" id="coding-confidence" class="range-slider" min="1" max="10" value="5">
+                            <span class="range-value" id="coding-conf-val">5/10</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="comm-confidence" class="form-label">Communication & Soft Skills</label>
+                        <div class="range-slider-group">
+                            <input type="range" id="comm-confidence" class="range-slider" min="1" max="10" value="5">
+                            <span class="range-value" id="comm-conf-val">5/10</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="learning-style" class="form-label">Preferred Learning Style</label>
+                        <select id="learning-style" class="form-input">
+                            <option value="Practical">Hands-on Coding & Sandbox Projects</option>
+                            <option value="Theoretical">Conceptual Docs & Database Relational Studies</option>
+                            <option value="Video">Video Tutorials & YouTube Playlists</option>
+                            <option value="Mixed" selected>Hybrid Learning (Videos + Challenges)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="student-skills" class="form-label">Existing Skills & Interests (Comma-separated, optional)</label>
+                        <input type="text" id="student-skills" class="form-input" placeholder="e.g. Python, SQL, Excel, Git, Web Design">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="student-resume" class="form-label">Paste Resume / CV text (Optional, for ATS matching & auto-skipping)</label>
+                        <textarea id="student-resume" class="form-input" style="height: 100px; resize: vertical; padding: 0.75rem; font-family: inherit; background: var(--input-bg); border: 1px solid var(--border-panel); color: var(--text-main); border-radius: 8px; outline: none;" placeholder="Paste your resume content to automatically extract and verify your skills..."></textarea>
+                    </div>
+
+                    <div class="onboarding-actions">
+                        <button class="btn btn-secondary btn-prev" data-prev="2"><i class="fa-solid fa-arrow-left"></i> Back</button>
+                        <button class="btn btn-primary btn-next" data-next="4">Proceed <i class="fa-solid fa-arrow-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- STEP 4: ASK GOALS -->
+                <div class="onboarding-step-pane" id="onboarding-step-4">
+                    <h2 class="step-title">Target Goal Matrix</h2>
+                    <p class="step-subtitle">Select your immediate targets so we can adjust mock interview timelines.</p>
+
+                    <div class="form-group">
+                        <label class="form-label">Select all targets that apply:</label>
+                        <div class="radio-cards-grid" style="grid-template-columns: 1fr; gap: 0.75rem;">
+                            <label class="checkbox-pill" style="cursor: pointer; display: block;">
+                                <input type="checkbox" name="onboarding-goals" value="placement" checked style="opacity:0; position:absolute;">
+                                <span class="radio-card-content" style="border:1px solid var(--border-panel); padding:1rem; border-radius:12px; display:flex; gap:1rem;">
+                                    <i class="fa-solid fa-briefcase text-orange" style="font-size:1.25rem;"></i>
+                                    <span style="display:flex; flex-direction:column; text-align:left;">
+                                        <strong>Campus Placements</strong>
+                                        <small style="color:var(--text-sub); font-size:0.75rem;">Structured mock interviews and resume optimization metrics.</small>
+                                    </span>
+                                </span>
+                            </label>
+
+                            <label class="checkbox-pill" style="cursor: pointer; display: block;">
+                                <input type="checkbox" name="onboarding-goals" value="internship" checked style="opacity:0; position:absolute;">
+                                <span class="radio-card-content" style="border:1px solid var(--border-panel); padding:1rem; border-radius:12px; display:flex; gap:1rem;">
+                                    <i class="fa-solid fa-user-graduate text-success" style="font-size:1.25rem;"></i>
+                                    <span style="display:flex; flex-direction:column; text-align:left;">
+                                        <strong>Summer Internships</strong>
+                                        <small style="color:var(--text-sub); font-size:0.75rem;">Focus on specific skills development and microprojects.</small>
+                                    </span>
+                                </span>
+                            </label>
+
+                            <label class="checkbox-pill" style="cursor: pointer; display: block;">
+                                <input type="checkbox" name="onboarding-goals" value="remote" style="opacity:0; position:absolute;">
+                                <span class="radio-card-content" style="border:1px solid var(--border-panel); padding:1rem; border-radius:12px; display:flex; gap:1rem;">
+                                    <i class="fa-solid fa-house-laptop text-orange" style="font-size:1.25rem;"></i>
+                                    <span style="display:flex; flex-direction:column; text-align:left;">
+                                        <strong>Remote Engineering Roles</strong>
+                                        <small style="color:var(--text-sub); font-size:0.75rem;">Focus on open source contributions and cloud deployments.</small>
+                                    </span>
+                                </span>
+                            </label>
+
+                            <label class="checkbox-pill" style="cursor: pointer; display: block;">
+                                <input type="checkbox" name="onboarding-goals" value="freelancing" style="opacity:0; position:absolute;">
+                                <span class="radio-card-content" style="border:1px solid var(--border-panel); padding:1rem; border-radius:12px; display:flex; gap:1rem;">
+                                    <i class="fa-solid fa-wallet text-secondary" style="font-size:1.25rem;"></i>
+                                    <span style="display:flex; flex-direction:column; text-align:left;">
+                                        <strong>Freelance / Speed Development</strong>
+                                        <small style="color:var(--text-sub); font-size:0.75rem;">Speed execution, dynamic styling libraries, and client MVP modules.</small>
+                                    </span>
+                                </span>
+                            </label>
+
+                            <label class="checkbox-pill" style="cursor: pointer; display: block;">
+                                <input type="checkbox" name="onboarding-goals" value="startup" style="opacity:0; position:absolute;">
+                                <span class="radio-card-content" style="border:1px solid var(--border-panel); padding:1rem; border-radius:12px; display:flex; gap:1rem;">
+                                    <i class="fa-solid fa-rocket text-primary" style="font-size:1.25rem;"></i>
+                                    <span style="display:flex; flex-direction:column; text-align:left;">
+                                        <strong>Founding SaaS / Startups</strong>
+                                        <small style="color:var(--text-sub); font-size:0.75rem;">System architectures, user authentication flows, databases, and microservices.</small>
+                                    </span>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="onboarding-actions">
+                        <button class="btn btn-secondary btn-prev" data-prev="3"><i class="fa-solid fa-arrow-left"></i> Back</button>
+                        <button class="btn btn-primary btn-next" data-next="5">Proceed <i class="fa-solid fa-arrow-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- STEP 5: AI SYNTHESIZER AND GENERATOR -->
+                <div class="onboarding-step-pane" id="onboarding-step-5">
+                    <h2 class="step-title text-center">Synthesizing Personalization Matrix</h2>
+                    <p class="step-subtitle text-center">SkillVerse AI engine is configuring custom roadmap modules, planning tasks, and interview targets.</p>
+                    
+                    <div style="margin: 2.5rem auto; max-width: 450px;">
+                        <!-- Scanner Loader status lines -->
+                        <div id="onboarding-loader-container">
+                            <div class="scan-loader">
+                                <div class="spinner"></div>
+                                <span id="onboarding-loader-text">Initializing SkillVerse core personalization links...</span>
+                            </div>
+                        </div>
+
+                        <!-- Progress visual logs terminal box -->
+                        <div class="terminal-pane glass-panel" style="margin-top: 1.5rem;">
+                            <div class="terminal-header" style="padding: 0.35rem 0.75rem;">
+                                <span class="terminal-title" style="font-size:0.7rem;"><i class="fa-solid fa-microchip"></i> SkillVerse AI Core Compiler</span>
+                            </div>
+                            <div id="onboarding-terminal-logs" class="terminal-output" style="height: 140px; padding: 0.75rem; font-size: 0.75rem;">
+                                Console initialized.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="onboarding-actions" style="justify-content: center;">
+                        <button id="btn-onboarding-launch" class="btn btn-success btn-lg glow-btn hidden" style="width: 100%; max-width: 320px;">
+                            Launch Future Learning Ecosystem <i class="fa-solid fa-rocket"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="onboarding.js"></script>
+</body>
+</html>

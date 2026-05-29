@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillVerse AI - Personalized Career Guidance Terminal</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- App Authentication Redirection Guard -->
+    <script src="auth.js"></script>
+
+    <!-- Toast Notifications Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- App Container -->
+    <div id="app" class="app-container">
+        
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-logo" onclick="window.location.href='dashboard.html'">
+                <i class="fa-solid fa-atom logo-icon"></i>
+                <div class="logo-text">
+                    <span class="logo-brand">SkillVerse AI</span>
+                    <span class="logo-tagline">Future Learning Ecosystem</span>
+                </div>
+            </div>
+            <div class="header-actions">
+                <!-- Streak Tracker Badge -->
+                <div id="global-streak-badge" class="streak-badge" title="Learning Streak">
+                    <i class="fa-solid fa-fire fire-icon"></i>
+                    <span id="global-streak-count">1</span> Day
+                </div>
+                <!-- XP Tracker Badge -->
+                <div id="global-xp-badge" class="xp-badge" title="Experience Points">
+                    <i class="fa-solid fa-shield-halved xp-icon"></i>
+                    <span id="global-xp-text">0 XP</span>
+                </div>
+                <!-- User Profile Badge -->
+                <a href="profile.html" id="user-badge" class="user-badge" title="View Profile Node">
+                    <i class="fa-solid fa-user-astronaut"></i>
+                    <span id="user-badge-name">Student</span>
+                    <span id="user-badge-level" class="level-tag">Beginner</span>
+                </a>
+                <!-- Light/Dark Mode Switcher -->
+                <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Theme">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Workspace -->
+        <main class="app-main">
+
+            <!-- DASHBOARD CONTAINER -->
+            <div class="dashboard-container">
+                
+                <!-- Sidebar Grid (Checklists & Navigation Tabs) -->
+                <aside class="dashboard-sidebar glass-panel">
+                    
+                    <!-- Selected Domain Header -->
+                    <div class="sidebar-domain-header">
+                        <div class="domain-avatar" id="sidebar-domain-icon">
+                            <i class="fa-solid fa-chart-column"></i>
+                        </div>
+                        <div class="domain-names">
+                            <h3 id="sidebar-domain-title">Domain Title</h3>
+                            <span class="change-domain-btn" id="change-domain-link" onclick="window.location.href='onboarding.html'"><i class="fa-solid fa-rotate-left"></i> Re-Onboard</span>
+                        </div>
+                    </div>
+
+                    <!-- Progress Tracker Widget -->
+                    <div class="sidebar-progress-card">
+                        <div class="progress-details">
+                            <span class="progress-label">Milestones Completed</span>
+                            <span id="overall-progress-text" class="progress-percent">0%</span>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div id="overall-progress-bar" class="progress-bar-fill" style="width: 0%"></div>
+                        </div>
+                        
+                        <!-- Mini XP indicator inside sidebar -->
+                        <div class="sidebar-xp-bar-container" style="margin-top: 0.75rem;">
+                            <div class="progress-details" style="font-size: 0.75rem; margin-bottom: 0.15rem;">
+                                <span class="progress-label" style="opacity: 0.8;">Level <span id="sidebar-xp-level">1</span></span>
+                                <span id="sidebar-xp-text" class="progress-percent">0 / 500 XP</span>
+                            </div>
+                            <div class="progress-bar-container" style="height: 5px;">
+                                <div id="sidebar-xp-progress" class="progress-bar-fill xp-fill-gradient" style="width: 0%; height: 5px;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar Navigation Tabs -->
+                    <nav class="sidebar-tabs-nav">
+                        <button class="tab-nav-btn active" data-tab="roadmap">
+                            <i class="fa-solid fa-compass-drafting"></i> <span>Personalized Roadmap</span>
+                        </button>
+                        <button class="tab-nav-btn" data-tab="planner">
+                            <i class="fa-solid fa-calendar-check"></i> <span>Weekly Planner</span>
+                        </button>
+                        <button class="tab-nav-btn" data-tab="mentor-chat">
+                            <i class="fa-solid fa-comments"></i> <span>AI Chatbot Assistant</span>
+                            <span class="chat-status-pulse"></span>
+                        </button>
+                        <button class="tab-nav-btn" data-tab="playground">
+                            <i class="fa-solid fa-terminal"></i> <span>Challenge Playground</span>
+                        </button>
+                        <button class="tab-nav-btn" data-tab="placement">
+                            <i class="fa-solid fa-file-signature"></i> <span>Resume Scorecard</span>
+                        </button>
+                        <button class="tab-nav-btn" data-tab="profile" onclick="window.location.href='profile.html'">
+                            <i class="fa-solid fa-sliders"></i> <span>Profile & Settings</span>
+                        </button>
+                    </nav>
+
+                    <!-- Steps Checklist Area -->
+                    <div class="sidebar-checklist-box">
+                        <h4>Roadmap Checkpoints</h4>
+                        <div id="sidebar-checklist-items" class="checklist-items-scroll">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Core Content Panels -->
+                <div class="dashboard-content">
+                    
+                    <!-- TAB 1: ADAPTIVE ROADMAP & DETAILS -->
+                    <div class="tab-pane active" id="tab-roadmap">
+                        <div class="pane-header">
+                            <div>
+                                <h2 id="roadmap-path-title">Career Path</h2>
+                                <p id="roadmap-path-subtitle">A personalized pathway designed for your speed and constraints.</p>
+                            </div>
+                            <div class="meta-badges">
+                                <span class="meta-badge"><i class="fa-solid fa-clock"></i> <span id="roadmap-time">3-5 Months</span></span>
+                                <span class="meta-badge"><i class="fa-solid fa-code"></i> Language: <span id="roadmap-language">Python</span></span>
+                            </div>
+                        </div>
+
+                        <!-- Top Level Overview Panel -->
+                        <div class="roadmap-overview-grid">
+                            <div class="overview-box glass-panel">
+                                <div class="box-icon"><i class="fa-solid fa-circle-question"></i></div>
+                                <h4>What is this domain?</h4>
+                                <p id="roadmap-domain-desc">Target description.</p>
+                            </div>
+                            <div class="overview-box glass-panel">
+                                <div class="box-icon"><i class="fa-solid fa-brain"></i></div>
+                                <h4>Core Concepts</h4>
+                                <ul id="roadmap-concepts-list" class="concept-bullet-list">
+                                    <!-- Dynamic -->
+                                </ul>
+                            </div>
+                            <div class="overview-box glass-panel">
+                                <div class="box-icon"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+                                <h4>Required Tools</h4>
+                                <div id="roadmap-tools-list" class="tools-tags-container">
+                                    <!-- Dynamic -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- AI Personal Mentor Hub Card -->
+                        <div id="ai-mentor-guidance-card" class="glass-panel mentor-guidance-card" style="margin-bottom: 2rem;">
+                            <div class="mentor-header-row">
+                                <div class="mentor-avatar-circle">
+                                    <i class="fa-solid fa-user-astronaut"></i>
+                                    <span class="pulse-ring"></span>
+                                </div>
+                                <div class="mentor-title-col">
+                                    <h4 id="mentor-title-name">AI Career Mentor</h4>
+                                    <span id="mentor-title-tagline" class="mentor-tagline">Futuristic Personal Advisor</span>
+                                </div>
+                                <button id="btn-quick-chat-mentor" class="btn btn-secondary btn-sm" style="margin-left: auto;"><i class="fa-solid fa-comments"></i> Chat with Mentor</button>
+                            </div>
+                            <div class="mentor-body-content">
+                                <div class="mentor-bubble">
+                                    <p id="mentor-guidance-bubble-text">Booting mentoring matrix. Evaluating student knowledge tier and portfolio readiness levels...</p>
+                                </div>
+                                <div id="mentor-adaptive-badges" class="mentor-adaptive-badges-row">
+                                    <!-- Populated dynamically -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- AI Mentor Briefing & Domain Insights -->
+                        <div class="glass-panel briefing-panel" style="margin-bottom: 2rem; padding: 1.5rem; text-align: left;">
+                            <div class="briefing-header" style="display: flex; align-items: center; gap: 0.75rem; border-bottom: 1px dashed var(--border-panel); padding-bottom: 0.75rem; margin-bottom: 1rem; cursor: pointer;" id="btn-toggle-briefing">
+                                <i class="fa-solid fa-graduation-cap text-cyan" style="font-size: 1.5rem;"></i>
+                                <h3 style="margin: 0; font-family: 'Outfit', sans-serif; font-size: 1.15rem; color: var(--text-main);">AI Mentor Deep-Dive Briefing</h3>
+                                <span style="margin-left: auto; color: var(--text-sub); font-size: 0.85rem;" id="briefing-toggle-icon"><i class="fa-solid fa-chevron-down"></i> Expand Guide</span>
+                            </div>
+                            <div id="briefing-content-container" class="hidden" style="transition: all 0.3s ease;">
+                                <div class="briefing-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem;">
+                                    <div class="briefing-box">
+                                        <h5 style="color: var(--secondary); margin-bottom: 0.5rem; font-size: 0.95rem; font-family: 'Outfit', sans-serif;"><i class="fa-solid fa-language"></i> Language & Tools First</h5>
+                                        <p id="brief-lang-tools" style="font-size: 0.85rem; color: var(--text-sub); line-height: 1.4; margin: 0;"></p>
+                                    </div>
+                                    <div class="briefing-box">
+                                        <h5 style="color: var(--primary); margin-bottom: 0.5rem; font-size: 0.95rem; font-family: 'Outfit', sans-serif;"><i class="fa-solid fa-cubes"></i> Core Skills Required</h5>
+                                        <div id="brief-skills-list" style="display: flex; flex-wrap: wrap; gap: 0.35rem;"></div>
+                                    </div>
+                                    <div class="briefing-box">
+                                        <h5 style="color: var(--success); margin-bottom: 0.5rem; font-size: 0.95rem; font-family: 'Outfit', sans-serif;"><i class="fa-solid fa-diagram-project"></i> Project Recommendations</h5>
+                                        <ul id="brief-projects-list" style="font-size: 0.85rem; color: var(--text-sub); padding-left: 1.1rem; line-height: 1.4; display: flex; flex-direction: column; gap: 0.35rem; margin: 0;"></ul>
+                                    </div>
+                                    <div class="briefing-box">
+                                        <h5 style="color: var(--cyan-glow); margin-bottom: 0.5rem; font-size: 0.95rem; font-family: 'Outfit', sans-serif;"><i class="fa-solid fa-clipboard-question"></i> Placement & Practice Strategy</h5>
+                                        <p id="brief-placement-strategy" style="font-size: 0.85rem; color: var(--text-sub); line-height: 1.4; margin-bottom: 0.5rem;"></p>
+                                        <div style="font-size: 0.8rem; color: var(--text-sub);">
+                                            <strong>Where to practice:</strong> <span id="brief-practice-platforms" style="color: var(--secondary);"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step-By-Step Interactive Timeline -->
+                        <h3 class="section-divider-title">Milestone Timeline</h3>
+                        
+                        <!-- Skipped notification for pre-existing skills -->
+                        <div id="adaptive-skills-notification" class="info-alert hidden">
+                            <div class="alert-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                            <div class="alert-text">
+                                <strong>AI Adaptation Engine Active:</strong> We configured skipped checkpoints based on your active skills (<span id="detected-skills-list">Excel</span>). Beginner tasks are pre-checked so you can start where it matters!
+                            </div>
+                        </div>
+
+                        <div class="timeline-container" id="roadmap-timeline-steps">
+                            <!-- Roadmap timeline cards populated by JS -->
+                        </div>
+                    </div>
+
+                    <!-- TAB 2: DAILY/WEEKLY STUDY PLANNER -->
+                    <div class="tab-pane" id="tab-planner">
+                        <div class="pane-header">
+                            <div>
+                                <h2>Weekly Learning Planner</h2>
+                                <p>A structured day-by-day sequence tailored to fit your goals.</p>
+                            </div>
+                        </div>
+
+                        <div class="planner-wrapper">
+                            <!-- Toggle View -->
+                            <div class="planner-navigation glass-panel">
+                                <button class="btn btn-secondary planner-toggle active" data-view="weekly">Weekly Milestones</button>
+                                <button class="btn btn-secondary planner-toggle" data-view="daily">Daily Schedule Checklist</button>
+                            </div>
+
+                            <!-- Weekly View Panel -->
+                            <div id="planner-weekly-view" class="planner-view-pane active">
+                                <div class="weekly-cards-timeline" id="weekly-plan-cards">
+                                    <!-- Dynamic content -->
+                                </div>
+                            </div>
+
+                            <!-- Daily View Panel -->
+                            <div id="planner-daily-view" class="planner-view-pane">
+                                <!-- AI Mentor Daily Strategy Card -->
+                                <div class="glass-panel mentor-strategy-card" style="margin-bottom: 1.5rem; padding: 1.5rem; border-color: rgba(34, 211, 238, 0.15); background: linear-gradient(135deg, var(--input-bg), rgba(34, 211, 238, 0.02)); text-align: left;">
+                                    <div style="display: flex; align-items: center; gap: 0.75rem; border-bottom: 1px dashed var(--border-panel); padding-bottom: 0.5rem; margin-bottom: 1rem;">
+                                        <i class="fa-solid fa-lightbulb text-cyan" style="font-size: 1.25rem;"></i>
+                                        <h4 style="margin: 0; font-family: 'Outfit', sans-serif; font-size: 1rem; color: var(--text-main);">AI Mentor Daily Learning Strategy</h4>
+                                    </div>
+                                    <div id="mentor-daily-plan-text" style="font-size: 0.85rem; color: var(--text-sub); line-height: 1.5;">
+                                        <!-- Populated dynamically -->
+                                    </div>
+                                </div>
+
+                                <div class="daily-schedule-card glass-panel">
+                                    <div class="schedule-header">
+                                        <h3>Recommended Daily Planner</h3>
+                                        <span class="badge badge-success">3 Hours/Day Study</span>
+                                    </div>
+                                    <div class="schedule-timeline" id="daily-plan-items">
+                                        <!-- Dynamic content -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Free Platforms and YouTube Recommendations -->
+                        <h3 class="section-divider-title">Free Study Resources</h3>
+                        <div class="resources-grid">
+                            <div class="resource-card glass-panel">
+                                <div class="res-card-header">
+                                    <i class="fa-solid fa-graduation-cap"></i>
+                                    <h4>Recommended Platforms</h4>
+                                </div>
+                                <div id="planner-platforms-list" class="resource-grid-cards">
+                                    <!-- Dynamic -->
+                                </div>
+                            </div>
+                            <div class="resource-card glass-panel">
+                                <div class="res-card-header">
+                                    <i class="fa-brands fa-youtube text-red"></i>
+                                    <h4>Top YouTube Mentors</h4>
+                                </div>
+                                <div id="planner-youtube-list" class="youtube-grid-cards">
+                                    <!-- Dynamic -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 3: AI PERSONAL MENTOR CHAT -->
+                    <div class="tab-pane" id="tab-mentor-chat">
+                        <div class="pane-header">
+                            <div>
+                                <h2>AI Chatbot Assistant</h2>
+                                <p>Your automated personal mentor. Ask coding syntax questions, explain milestones, or request portfolio tips.</p>
+                            </div>
+                        </div>
+
+                        <div class="chat-container-layout glass-panel">
+                            <!-- Chat Sidebar (Active Mentor Profile) -->
+                            <div class="chat-mentor-profile">
+                                <div class="mentor-avatar-big">
+                                    <i class="fa-solid fa-atom"></i>
+                                    <span class="status-dot online"></span>
+                                </div>
+                                <h3 id="chat-mentor-name">SkillVerse AI Assistant</h3>
+                                <p class="mentor-role">Your Smart Coding & Career Companion</p>
+                                <span class="mentor-badge" id="chat-mentor-specialty">Specialty: Full Stack Engineering</span>
+
+                                <hr class="divider">
+
+                                <div class="mentor-prompt-suggestions">
+                                    <h4>Suggested Prompts:</h4>
+                                    <button class="chip prompt-chip">Explain my current step</button>
+                                    <button class="chip prompt-chip">Suggest a beginner project</button>
+                                    <button class="chip prompt-chip">Where can I practice code?</button>
+                                    <button class="chip prompt-chip">How do I prepare for interviews?</button>
+                                </div>
+                            </div>
+
+                            <!-- Chat Main Workspace -->
+                            <div class="chat-messages-box">
+                                <div class="messages-scroll" id="chat-messages-container">
+                                    <!-- Welcoming messages render here -->
+                                </div>
+                                <div class="chat-input-area">
+                                    <input type="text" id="chat-user-message" placeholder="Type a message to your mentor..." aria-label="Type message">
+                                    <button id="btn-send-message" class="btn btn-primary btn-icon"><i class="fa-solid fa-paper-plane"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 4: CODE & SQL PRACTICE PLAYGROUND -->
+                    <div class="tab-pane" id="tab-playground">
+                        <div class="pane-header">
+                            <div>
+                                <h2>Challenge Playground</h2>
+                                <p>Complete hands-on database or script challenges to verify your skill tags and earn <strong class="text-orange">+100 XP</strong>!</p>
+                            </div>
+                        </div>
+
+                        <div class="playground-layout">
+                            <!-- Task Selection list -->
+                            <div class="playground-challenges-sidebar glass-panel">
+                                <h3>Coding Challenges</h3>
+                                <div class="challenges-list" id="playground-challenges-list">
+                                    <!-- Populated dynamically -->
+                                </div>
+                            </div>
+
+                            <!-- Editor and Terminal Area -->
+                            <div class="playground-editor-workspace">
+                                <div class="challenge-instruction-card glass-panel" id="playground-instruction-pane">
+                                    <!-- Dynamic instruction details -->
+                                </div>
+
+                                <div class="editor-pane glass-panel">
+                                    <div class="editor-header">
+                                        <span class="editor-title"><i class="fa-solid fa-code"></i> Editor Workspace</span>
+                                        <div class="lang-selector-group">
+                                            <select id="playground-lang-select" class="select-dropdown">
+                                                <option value="javascript">JavaScript</option>
+                                                <option value="python">Python</option>
+                                                <option value="html">HTML/CSS</option>
+                                                <option value="sql">SQL</option>
+                                                <option value="java">Java</option>
+                                                <option value="c">C</option>
+                                                <option value="cpp">C++</option>
+                                                <option value="typescript">TypeScript</option>
+                                                <option value="php">PHP</option>
+                                                <option value="go">Go</option>
+                                                <option value="rust">Rust</option>
+                                            </select>
+                                            <button class="btn btn-secondary btn-sm" id="btn-reset-code" title="Reset Starter Code"><i class="fa-solid fa-arrow-rotate-left"></i></button>
+                                        </div>
+                                    </div>
+                                    <textarea id="playground-code-area" class="code-textarea" spellcheck="false"></textarea>
+                                </div>
+
+                                <div class="terminal-pane glass-panel">
+                                    <div class="terminal-header">
+                                        <span class="terminal-title"><i class="fa-solid fa-terminal"></i> Output Console</span>
+                                        <div style="display: flex; gap: 0.5rem;">
+                                            <button class="btn btn-secondary btn-sm" id="btn-run-code"><i class="fa-solid fa-play"></i> Run Code</button>
+                                            <button class="btn btn-success btn-sm" id="btn-submit-code"><i class="fa-solid fa-cloud-arrow-up"></i> Submit Solution</button>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- HTML live preview target frame -->
+                                    <div id="html-preview-box" class="live-preview-container hidden">
+                                        <iframe id="live-iframe-display" class="live-preview-iframe"></iframe>
+                                    </div>
+
+                                    <!-- SQL query results display container -->
+                                    <div id="sql-results-box" class="sql-results-table-container hidden">
+                                        <!-- Injected by script -->
+                                    </div>
+
+                                    <div id="playground-terminal-output" class="terminal-output">
+                                        Console initialized. Select language and run scripts...
+                                    </div>
+
+                                    <!-- Test case checks validations pane -->
+                                    <div class="test-cases-dashboard-box">
+                                        <h4>Test Case Validations</h4>
+                                        <div class="test-cases-grid" id="playground-test-cases-list">
+                                            <div class="test-case-item" id="test-case-1">
+                                                <span>Test Case 1</span>
+                                                <span class="test-case-status-dot failed">✕</span>
+                                            </div>
+                                            <div class="test-case-item" id="test-case-2">
+                                                <span>Test Case 2</span>
+                                                <span class="test-case-status-dot failed">✕</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 5: PLACEMENT & INTERVIEW PREPARATION -->
+                    <div class="tab-pane" id="tab-placement">
+                        <div class="pane-header">
+                            <div>
+                                <h2>Resume Scorecard Matcher</h2>
+                                <p>Evaluate your profile match rate and verify key domain-specific keywords for placement readiness.</p>
+                            </div>
+                        </div>
+
+                        <div class="placement-grid">
+                            
+                            <!-- Resume Optimizer Checklist -->
+                            <div class="placement-card glass-panel">
+                                <div class="card-title-bar">
+                                    <i class="fa-solid fa-file-signature"></i>
+                                    <h3>Resume Scorecard Matcher</h3>
+                                </div>
+                                <p class="card-desc">Keywords match rate check against target profiles. Compare resume against target role.</p>
+                                
+                                <div class="resume-score-widget">
+                                    <div class="radial-progress" style="--percent: 0;" id="resume-score-ring">
+                                        <span id="resume-score-value">0%</span>
+                                    </div>
+                                    <div class="score-details">
+                                        <h4>Match Rating: <span id="resume-score-rating-text" class="text-red">Unscanned</span></h4>
+                                        <p>Select target role and drag & drop your CV below to run analysis.</p>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" style="border-top:1px dashed var(--border-panel); padding-top:1.25rem; display: flex; flex-direction: column; gap: 1rem;">
+                                    <div class="form-group" style="margin: 0; text-align: left;">
+                                        <label class="form-label" style="font-size: 0.85rem;"><i class="fa-solid fa-user-tie"></i> Target Career Role</label>
+                                        <select id="resume-role-select" class="form-input" style="padding: 0.5rem; font-size: 0.9rem;">
+                                            <option value="data_analyst">Data Analyst</option>
+                                            <option value="data_scientist">Data Scientist</option>
+                                            <option value="cloud_engineer">Cloud Engineer</option>
+                                            <option value="frontend_developer">Frontend Developer</option>
+                                            <option value="backend_developer">Backend Developer</option>
+                                            <option value="product_manager">Product Manager</option>
+                                            <option value="ai_engineer">AI Engineer</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <label class="form-label" style="margin: 0;"><i class="fa-solid fa-file-signature"></i> Paste Resume Text</label>
+                                    <textarea id="resume-text-input" class="code-textarea" placeholder="Paste or type your resume text here to analyze keyword compatibility..." style="height: 120px; font-family: inherit; font-size: 0.85rem; padding: 0.75rem; background: var(--input-bg); border: 1px solid var(--border-panel); color: var(--text-main); border-radius: 8px; resize: vertical; outline: none; transition: border-color 0.3s;" spellcheck="false"></textarea>
+                                    
+                                    <button type="button" id="btn-scan-resume" class="btn btn-primary" style="width: 100%;"><i class="fa-solid fa-magnifying-glass-chart"></i> Run Resume Scorecard</button>
+                                </div>
+
+                                <div id="scan-loader" class="scan-loader hidden" style="margin-top: 1rem; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; background: var(--input-bg); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-panel);">
+                                    <div class="spinner" style="border: 3px solid rgba(255,255,255,0.05); border-top: 3px solid var(--secondary); border-radius: 50%; width: 26px; height: 26px; animation: spin 1s linear infinite;"></div>
+                                    <span id="scan-loader-text" style="font-family: monospace; font-size: 0.75rem; color: var(--secondary);">Analyzing CV contents...</span>
+                                    <div class="progress-bar-container" style="height: 4px; width: 100%; max-width: 200px; background: rgba(255,255,255,0.05); border-radius: 2px; overflow: hidden;"><div id="scan-progress-fill" class="progress-bar-fill" style="width: 0%; background: var(--secondary); height: 100%; transition: width 0.3s ease;"></div></div>
+                                </div>
+
+                                <!-- ATS Analysis Results Dashboard (Hidden until scanned) -->
+                                <div id="resume-report-dashboard" class="hidden" style="margin-top: 1.5rem; border-top: 1px dashed var(--border-panel); padding-top: 1.5rem; display: flex; flex-direction: column; gap: 1.25rem; text-align: left;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <h4 style="color: var(--cyan-glow); margin: 0; font-family: 'Sora', sans-serif; font-size: 0.9rem;"><i class="fa-solid fa-square-poll-vertical"></i> ATS Analysis Report</h4>
+                                        <span id="resume-strength-badge" class="badge badge-warning" style="font-size: 0.7rem; padding: 0.2rem 0.5rem;">Fair</span>
+                                    </div>
+                                    
+                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                                        <!-- Missing Skills -->
+                                        <div class="glass-panel" style="padding: 0.75rem; border-radius: 8px; background: rgba(239, 68, 68, 0.05); border: 1px solid rgba(239, 68, 68, 0.15);">
+                                            <h5 style="color: var(--danger); font-size: 0.8rem; margin-bottom: 0.4rem; font-weight:600;"><i class="fa-solid fa-circle-xmark"></i> Missing Skills</h5>
+                                            <ul id="resume-missing-skills" style="list-style: none; padding-left: 0; font-size: 0.75rem; display: flex; flex-wrap: wrap; gap: 0.35rem; margin: 0;">
+                                                <!-- Filled dynamically -->
+                                            </ul>
+                                        </div>
+                                        
+                                        <!-- Recommended Skills -->
+                                        <div class="glass-panel" style="padding: 0.75rem; border-radius: 8px; background: rgba(34, 211, 238, 0.05); border: 1px solid rgba(34, 211, 238, 0.15);">
+                                            <h5 style="color: var(--cyan-glow); font-size: 0.8rem; margin-bottom: 0.4rem; font-weight:600;"><i class="fa-solid fa-lightbulb"></i> Recommended</h5>
+                                            <ul id="resume-recommended-skills" style="list-style: none; padding-left: 0; font-size: 0.75rem; display: flex; flex-wrap: wrap; gap: 0.35rem; margin: 0;">
+                                                <!-- Filled dynamically -->
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Suggested Improvements -->
+                                    <div class="glass-panel" style="padding: 0.75rem; border-radius: 8px; background: var(--input-bg); border: 1px solid var(--border-panel);">
+                                        <h5 style="color: var(--primary); font-size: 0.8rem; margin-bottom: 0.4rem; font-weight:600;"><i class="fa-solid fa-list-check"></i> Suggested Improvements</h5>
+                                        <ul id="resume-improvements" style="padding-left: 1.1rem; font-size: 0.75rem; color: var(--text-sub); display: flex; flex-direction: column; gap: 0.25rem; margin: 0;">
+                                            <!-- Filled dynamically -->
+                                        </ul>
+                                    </div>
+                                    
+                                    <!-- Recommended Learning Paths -->
+                                    <div class="glass-panel" style="padding: 0.75rem; border-radius: 8px; background: var(--input-bg); border: 1px solid var(--border-panel);">
+                                        <h5 style="color: var(--success); font-size: 0.8rem; margin-bottom: 0.4rem; font-weight:600;"><i class="fa-solid fa-graduation-cap"></i> Recommended Learning Paths</h5>
+                                        <div id="resume-learning-paths" style="display: flex; flex-direction: column; gap: 0.4rem; font-size: 0.75rem;">
+                                            <!-- Filled dynamically -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Mock Interview Simulator Card -->
+                            <div class="placement-card glass-panel" id="mock-interview-card" style="text-align: left;">
+                                <div class="card-title-bar">
+                                    <i class="fa-solid fa-user-tie text-secondary"></i>
+                                    <h3>Mock Interview Prep Simulator</h3>
+                                </div>
+                                <p class="card-desc">Practice answering conceptual & behavioral questions. The AI will evaluate your answers against target domain keywords.</p>
+                                
+                                <div class="form-group" style="margin-bottom: 1rem; text-align: left;">
+                                    <label class="form-label" style="font-size: 0.85rem;"><i class="fa-solid fa-sliders"></i> Difficulty Filter</label>
+                                    <select id="interview-difficulty-select" class="form-input" style="padding: 0.5rem; font-size: 0.9rem; background: var(--input-bg); border: 1px solid var(--border-panel); color: var(--text-main); border-radius: 8px; width: 100%;">
+                                        <option value="all">All Difficulties</option>
+                                        <option value="easy">Easy</option>
+                                        <option value="medium">Medium</option>
+                                        <option value="hard">Hard</option>
+                                    </select>
+                                </div>
+                                
+                                <!-- Active Question Box -->
+                                <div class="glass-panel" style="padding: 1rem; border-radius: 8px; background: rgba(0, 0, 0, 0.2); border: 1px solid var(--border-panel); margin-bottom: 1rem;">
+                                    <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--secondary); font-weight: 600; margin-bottom: 0.5rem;">
+                                        <span id="interview-question-type" style="color: var(--secondary);">TECHNICAL QUESTION</span>
+                                        <span id="interview-question-difficulty" class="badge badge-warning" style="text-transform: uppercase; font-size: 0.7rem; padding: 0.1rem 0.4rem;">Medium</span>
+                                    </div>
+                                    <p id="interview-question-text" style="font-family: inherit; font-size: 0.9rem; color: var(--text-main); margin: 0; font-weight: 500;"></p>
+                                </div>
+                                
+                                <!-- User Answer Input -->
+                                <div class="form-group" style="display: flex; flex-direction: column; gap: 0.75rem; text-align: left;">
+                                    <label class="form-label" style="font-size: 0.85rem; margin: 0;"><i class="fa-solid fa-keyboard"></i> Type Your Response</label>
+                                    <textarea id="interview-answer-input" class="code-textarea" placeholder="Type your detailed answer here... Include core concepts and explain your logic..." style="height: 120px; font-family: inherit; font-size: 0.85rem; padding: 0.75rem; background: var(--input-bg); border: 1px solid var(--border-panel); color: var(--text-main); border-radius: 8px; resize: vertical; outline: none; transition: border-color 0.3s;" spellcheck="false"></textarea>
+                                    
+                                    <div style="display: flex; gap: 0.5rem;">
+                                        <button type="button" id="btn-submit-interview-answer" class="btn btn-primary" style="flex: 1;"><i class="fa-solid fa-square-poll-vertical"></i> Evaluate Answer</button>
+                                        <button type="button" id="btn-next-interview-question" class="btn btn-secondary" style="flex: 1;"><i class="fa-solid fa-forward"></i> Skip / Next</button>
+                                    </div>
+                                </div>
+                                
+                                <!-- Interview Analysis Loader -->
+                                <div id="interview-loader" class="scan-loader hidden" style="margin-top: 1rem; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; background: var(--input-bg); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-panel);">
+                                    <div class="spinner" style="border: 3px solid rgba(255,255,255,0.05); border-top: 3px solid var(--secondary); border-radius: 50%; width: 26px; height: 26px; animation: spin 1s linear infinite;"></div>
+                                    <span style="font-family: monospace; font-size: 0.75rem; color: var(--secondary);">AI Mentor is evaluating your response parameters...</span>
+                                </div>
+                                
+                                <!-- Analysis Evaluation Results Card (Hidden until submitted) -->
+                                <div id="interview-evaluation-report" class="hidden" style="margin-top: 1.5rem; border-top: 1px dashed var(--border-panel); padding-top: 1.5rem; display: flex; flex-direction: column; gap: 1rem; text-align: left;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <h4 style="color: var(--cyan-glow); margin: 0; font-family: 'Sora', sans-serif; font-size: 0.9rem;"><i class="fa-solid fa-square-poll-vertical"></i> Evaluation Score</h4>
+                                        <span id="interview-score-badge" class="badge badge-success" style="font-size: 0.75rem; padding: 0.2rem 0.5rem;">8.5 / 10</span>
+                                    </div>
+                                    
+                                    <!-- Feedback Text -->
+                                    <div class="glass-panel" style="padding: 0.75rem; border-radius: 8px; background: var(--input-bg); border: 1px solid var(--border-panel);">
+                                        <h5 style="color: var(--primary); font-size: 0.8rem; margin-bottom: 0.4rem; font-weight:600;"><i class="fa-solid fa-comments"></i> Mentor Feedback</h5>
+                                        <p id="interview-feedback-text" style="font-size: 0.8rem; color: var(--text-sub); margin: 0; line-height: 1.4;"></p>
+                                    </div>
+                                    
+                                    <!-- Keyword Match Details -->
+                                    <div class="glass-panel" style="padding: 0.75rem; border-radius: 8px; background: var(--input-bg); border: 1px solid var(--border-panel);">
+                                        <h5 style="color: var(--success); font-size: 0.8rem; margin-bottom: 0.4rem; font-weight:600;"><i class="fa-solid fa-key"></i> Key Concepts Matched</h5>
+                                        <div id="interview-keywords-matched" style="display: flex; flex-wrap: wrap; gap: 0.35rem;">
+                                            <!-- Filled dynamically -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Internships & Hackathons suggestions -->
+                        <h3 class="section-divider-title">Personalized Opportunities recommendations</h3>
+                        <div class="activities-grid" id="activities-cards-container">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p>© 2026 SkillVerse AI. Powered by Futuristic personal Career Personalization Engine.</p>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="data.js"></script>
+    <script src="dashboard.js"></script>
+</body>
+</html>

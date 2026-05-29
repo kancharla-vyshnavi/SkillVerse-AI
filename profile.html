@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillVerse AI - Student Profile Core</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- App Authentication Redirection Guard -->
+    <script src="auth.js"></script>
+
+    <!-- Toast Notifications Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- App Container -->
+    <div id="app" class="app-container">
+        
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-logo" onclick="window.location.href='dashboard.html'">
+                <i class="fa-solid fa-atom logo-icon"></i>
+                <div class="logo-text">
+                    <span class="logo-brand">SkillVerse AI</span>
+                    <span class="logo-tagline">Future Learning Ecosystem</span>
+                </div>
+            </div>
+            <div class="header-actions">
+                <!-- Streak Tracker Badge -->
+                <div id="global-streak-badge" class="streak-badge" title="Learning Streak">
+                    <i class="fa-solid fa-fire fire-icon"></i>
+                    <span id="global-streak-count">1</span> Day
+                </div>
+                <!-- XP Tracker Badge -->
+                <div id="global-xp-badge" class="xp-badge" title="Experience Points">
+                    <i class="fa-solid fa-shield-halved xp-icon"></i>
+                    <span id="global-xp-text">0 XP</span>
+                </div>
+                <!-- Dashboard Nav Button -->
+                <a href="dashboard.html" class="user-badge" style="background:var(--secondary-glow); border-color:var(--secondary);">
+                    <i class="fa-solid fa-gauge-high"></i>
+                    <span>Terminal</span>
+                </a>
+                <!-- Light/Dark Mode Switcher -->
+                <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Theme">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Workspace -->
+        <main class="app-main">
+            <div class="profile-layout-grid">
+                
+                <!-- Profile Sidebar Card (Displays static details, stats and metadata) -->
+                <div class="profile-card-sidebar glass-panel">
+                    <div class="profile-avatar-large">
+                        <i class="fa-solid fa-user-astronaut"></i>
+                    </div>
+                    <div>
+                        <h2 class="profile-name-title" id="side-student-name">Student Name</h2>
+                        <span class="profile-badge-role" id="side-target-role">Target Role</span>
+                    </div>
+
+                    <!-- Side Stats Grid -->
+                    <div class="profile-stats-card-grid">
+                        <div class="profile-stat-box">
+                            <i class="fa-solid fa-fire text-orange"></i>
+                            <span class="num" id="stat-streak">1</span>
+                            <span class="lbl">Active Streak</span>
+                        </div>
+                        <div class="profile-stat-box">
+                            <i class="fa-solid fa-shield-halved text-secondary"></i>
+                            <span class="num" id="stat-xp">0</span>
+                            <span class="lbl">Total XP</span>
+                        </div>
+                        <div class="profile-stat-box" style="grid-column: span 2;">
+                            <i class="fa-solid fa-medal text-primary" style="margin-bottom:0.1rem;"></i>
+                            <span class="num" id="stat-milestones">0</span>
+                            <span class="lbl">Completed Roadmap Milestones</span>
+                        </div>
+                    </div>
+
+                    <!-- Details Table -->
+                    <div class="profile-details-table">
+                        <div class="profile-details-row">
+                            <span class="lbl">College:</span>
+                            <span class="val" id="detail-college" title="Institution">Institution</span>
+                        </div>
+                        <div class="profile-details-row">
+                            <span class="lbl">Branch:</span>
+                            <span class="val" id="detail-branch">Branch</span>
+                        </div>
+                        <div class="profile-details-row">
+                            <span class="lbl">Year:</span>
+                            <span class="val" id="detail-year">Year</span>
+                        </div>
+                        <div class="profile-details-row">
+                            <span class="lbl">Academics (CGPA):</span>
+                            <span class="val" id="detail-cgpa">8.0</span>
+                        </div>
+                        <div class="profile-details-row">
+                            <span class="lbl">Skill Level:</span>
+                            <span class="val" id="detail-level" style="text-transform: capitalize;">Beginner</span>
+                        </div>
+                    </div>
+
+                    <button id="btn-logout" class="btn btn-danger" style="width: 100%; margin-top: 1rem;">
+                        Disconnect Link (Logout) <i class="fa-solid fa-power-off"></i>
+                    </button>
+                </div>
+
+                <!-- Main Section Workspace -->
+                <div class="profile-main-workspace">
+                    
+                    <!-- 1. EDIT PROFILE FORM CARD -->
+                    <div class="profile-section-card glass-panel">
+                        <h3><i class="fa-solid fa-user-pen"></i> Edit Personal Core</h3>
+                        
+                        <!-- Form Validation Alert -->
+                        <div id="profile-edit-alert" class="validation-alert error hidden" style="margin-bottom: 1.5rem;">
+                            <i class="fa-solid fa-circle-exclamation"></i>
+                            <span id="profile-edit-alert-text">Error</span>
+                        </div>
+
+                        <form id="profile-edit-form">
+                            <div class="form-row-2col">
+                                <div class="form-group">
+                                    <label for="edit-name" class="form-label">Full Name</label>
+                                    <input type="text" id="edit-name" class="form-input" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="edit-college" class="form-label">Institution / College Name</label>
+                                    <input type="text" id="edit-college" class="form-input" required>
+                                </div>
+                            </div>
+
+                            <div class="form-row-2col">
+                                <div class="form-group">
+                                    <label for="edit-branch" class="form-label">Branch / Department</label>
+                                    <select id="edit-branch" class="form-input" required>
+                                        <option value="Computer Science">Computer Science & Engineering</option>
+                                        <option value="Information Technology">Information Technology</option>
+                                        <option value="Electronics & Communication">Electronics & Communication</option>
+                                        <option value="Electrical Engineering">Electrical Engineering</option>
+                                        <option value="Mechanical Engineering">Mechanical Engineering</option>
+                                        <option value="Civil Engineering">Civil Engineering</option>
+                                        <option value="Data Science / AI">Data Science & AI</option>
+                                        <option value="Other">Other Branch</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="edit-year" class="form-label">Year of Study</label>
+                                    <select id="edit-year" class="form-input" required>
+                                        <option value="1st Year">1st Year (Freshman)</option>
+                                        <option value="2nd Year">2nd Year (Sophomore)</option>
+                                        <option value="3rd Year">3rd Year (Junior)</option>
+                                        <option value="4th Year">4th Year (Senior)</option>
+                                        <option value="Post-Graduate">Post-Graduate</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-row-2col">
+                                <div class="form-group">
+                                    <label for="edit-cgpa" class="form-label">CGPA / Percentage</label>
+                                    <input type="number" id="edit-cgpa" class="form-input" min="0" max="100" step="0.01" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="edit-domain" class="form-label">Primary Target Career Domain</label>
+                                    <select id="edit-domain" class="form-input" required>
+                                        <option value="software_engineer">Software Developer / Software Engineer</option>
+                                        <option value="data_scientist">Data Scientist</option>
+                                        <option value="ai_ml">AI / ML Engineer</option>
+                                        <option value="cybersecurity">Cybersecurity Analyst</option>
+                                        <option value="cloud">Cloud Engineer</option>
+                                        <option value="ui_ux">UI/UX Designer</option>
+                                        <option value="business_analyst">Business Analyst</option>
+                                        <option value="product_manager">Product Manager</option>
+                                        <option value="mechanical_design">Mechanical Design Engineer</option>
+                                        <option value="civil_services">Civil Services (IAS/IPS/IFS)</option>
+                                        <option value="psu">Public Sector Undertakings (PSUs)</option>
+                                        <option value="entrepreneur">Entrepreneur / Startup Founder</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-row-2col">
+                                <div class="form-group">
+                                    <label for="edit-level" class="form-label">Knowledge Level</label>
+                                    <select id="edit-level" class="form-input" required>
+                                        <option value="beginner">Beginner</option>
+                                        <option value="intermediate">Intermediate</option>
+                                        <option value="advanced">Advanced</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="edit-goal" class="form-label">Roadmap Strategy Goal</label>
+                                    <select id="edit-goal" class="form-input" required>
+                                        <option value="placement">Campus Placement Ready</option>
+                                        <option value="internship">Summer Internship Search</option>
+                                        <option value="remote">Remote Job Ready</option>
+                                        <option value="freelance">Freelance Speed Coding</option>
+                                        <option value="startup">Startup MVP Deployments</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div style="text-align: right; margin-top: 1rem;">
+                                <button type="submit" class="btn btn-primary glow-btn">
+                                    Save Core Modifications <i class="fa-solid fa-circle-check"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- 2. ANALYTICS & WEEKLY ACTIVITY GRAPH -->
+                    <div class="profile-section-card glass-panel">
+                        <h3><i class="fa-solid fa-chart-line"></i> Weekly Activity Consistency</h3>
+                        <p style="font-size:0.8rem; color:var(--text-sub); margin-bottom:1rem;">Visual tracker displaying your study time consistency over the last week.</p>
+                        
+                        <div class="analytics-chart-container" id="profile-analytics-chart">
+                            <!-- Custom SVG bar graph injected by JS -->
+                        </div>
+                    </div>
+
+                    <!-- 3. BADGES SHOWROOM CARD -->
+                    <div class="profile-section-card glass-panel">
+                        <h3><i class="fa-solid fa-award"></i> Achievement Badges Showroom</h3>
+                        <p style="font-size:0.8rem; color:var(--text-sub); margin-bottom:1.5rem;">Unlocked by completing coding challenges, resume checks, mock interviews and milestone checklists.</p>
+                        
+                        <div class="badge-showroom-grid" id="profile-badges-showroom">
+                            <!-- Badges injected dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- 4. HARD RESET SETTINGS CARD -->
+                    <div class="profile-section-card glass-panel" style="border-color: rgba(239, 68, 68, 0.15); background: rgba(239, 68, 68, 0.01);">
+                        <h3 style="color:var(--danger); border-bottom-color: rgba(239, 68, 68, 0.15);"><i class="fa-solid fa-triangle-exclamation"></i> Danger Zone</h3>
+                        <p style="font-size:0.85rem; color:var(--text-sub); margin-bottom:1.25rem;">This will completely reset all roadmap milestones, XP, streak counters, and resume scans back to onboarding defaults. This action is irreversible.</p>
+                        <button id="btn-hard-reset" class="btn btn-secondary" style="border-color:var(--danger); color:var(--danger);">
+                            Reset All Progress Logs <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p>© 2026 SkillVerse AI. Powered by Futuristic personal Career Personalization Engine.</p>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="data.js"></script>
+    <script src="profile.js"></script>
+</body>
+</html>
